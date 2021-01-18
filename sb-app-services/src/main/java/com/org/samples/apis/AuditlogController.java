@@ -5,6 +5,8 @@
  */
 package com.org.samples.apis;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.org.samples.dto.AuditlogDto;
 import com.org.samples.models.AppRestResponse;
 import com.org.samples.services.AuditlogService;
@@ -88,4 +90,19 @@ public class AuditlogController {
         return errorObject;
     }
     
+    
+    
+    @HystrixCommand(fallbackMethod = "fallback_hello", commandProperties = {
+        @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
+    })
+    @RequestMapping(value = "/hystrix")
+    public String hello() throws InterruptedException {
+       Thread.sleep(3000);
+       return "Welcome Hystrix";
+    }
+    
+    private String fallback_hello() {
+        log.info("Request fails. It takes long time to response");
+        return "Request fails. It takes long time to response";
+    }
 }

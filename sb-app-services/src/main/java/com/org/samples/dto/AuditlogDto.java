@@ -6,12 +6,13 @@
 package com.org.samples.dto;
 
 import com.org.samples.domain.AuditLog;
-import com.org.samples.domain.AuditType;
+import lombok.Data;
 
 /**
  *
  * @author brijeshdhaker
  */
+@Data
 @SuppressWarnings("all")
 public class AuditlogDto {
     
