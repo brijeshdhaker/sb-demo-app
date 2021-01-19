@@ -98,11 +98,11 @@ public class AuditlogController {
     @RequestMapping(value = "/hystrix")
     public String hello() throws InterruptedException {
        Thread.sleep(3000);
-       return "Welcome Hystrix";
+       return "{\"message\": \"Welcome Hystrix\" }";
     }
     
     private String fallback_hello() {
         log.info("Request fails. It takes long time to response");
-        return "Request fails. It takes long time to response";
+        return "{\"message\": \"Request fails. It takes long time to response\" }";
     }
 }
