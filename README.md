@@ -22,3 +22,7 @@ The following guides illustrate how to use some features concretely:
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 * [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
 
+### URLs
+* [Swagger] http://localhost:8080/swagger-ui.html
+* [Hystrix] http://localhost:8080/hystrix
+* [Hystrix Stream] http://localhost:8080/actuator/hystrix.stream

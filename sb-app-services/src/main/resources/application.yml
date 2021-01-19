@@ -2,6 +2,21 @@
 ---
 server:
   port: 8080
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    hystrix:
+      stream:
+        enabled: true
+    info:
+      enabled: true
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"      
 spring:
   application:
     name: sample-app
