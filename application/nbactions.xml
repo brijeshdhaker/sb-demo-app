@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>run</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>spring-boot:run</goal>
+        </goals>
+        <properties>
+            <run.jvmArguments>-Dspring.profiles.active=local -noverify -XX:TieredStopAtLevel=1</run.jvmArguments>
+            <run.mainClass>com.org.samples.Application</run.mainClass>
+            <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
+            <Env.SPRING_PROFILES_ACTIVE>local</Env.SPRING_PROFILES_ACTIVE>
+        </properties>
+    </action>
+    <action>
+        <actionName>CUSTOM-clean-install</actionName>
+        <displayName>clean-install</displayName>
+        <goals>
+            <goal>clean</goal>
+            <goal>install</goal>
+        </goals>
+    </action>
+</actions>

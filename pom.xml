@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
@@ -10,26 +9,29 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     
-    <groupId>com.org.samples</groupId>
-    <artifactId>sb-demo-app</artifactId>
+    <groupId>sample.multimodule</groupId>
+    <artifactId>sample.multimodule</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>sb-demo-app</name>
-    <description>Demo project for Spring Boot</description>
+    <name>Parent - Pom Aggregator</name>
+    <description>This pom is a maven aggregator that contains all application modules. Also, include all
+        common dependencies needed by more than one module. Dependencies are defined without version because
+        this project has defined Spring IO Platform as parent.</description>
 
     <properties>
         <java.version>1.8</java.version>
-         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
     </properties>
 
+    <modules>
+        <module>model</module>
+        <module>repository</module>
+        <module>services</module>
+        <module>application</module>
+        <module>utilities</module>
+    </modules>
+    
     <repositories>
-        <!--
-        <repository>
-            <id>unknown-jars-temp-repo</id>
-            <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
-            <url>file:${project.basedir}/lib</url>
-        </repository>
-        -->
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
@@ -82,46 +84,21 @@
         </pluginRepository>
     </pluginRepositories>
     
-    <build>
-        <plugins>
-            <!--
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <skip>false</skip>
-                </configuration>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.8.1</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    
-    <modules>
-        <module>sb-app-utils</module>
-        <module>sb-app-services</module>
-        <module>sb-app-parent</module>
-    </modules>
-    
+    <dependencies>
+
+        <!-- Spring Boot dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        
+    </dependencies>
+
 </project>
+
