@@ -1,0 +1,17 @@
+version: '2'
+services:
+  nb-springboot-docker-app:
+    image: nebrass/nb-springboot-docker
+    external_links:
+      - db:postgres
+    ports:
+      - 8080:8080
+      - 8000:8000
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=demo
+      - POSTGRES_PASSWORD=p4SSW0rd
+      - POSTGRES_USER=developer
+    ports:
+      - 5432:5432
