@@ -1,84 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
     <action>
-        <actionName>run</actionName>
-        <preAction>build-with-dependencies</preAction>
-        <packagings>
-            <packaging>jar</packaging>
-        </packagings>
-        <goals>
-            <goal>spring-boot:run</goal>
-        </goals>
-        <properties>
-            <spring-boot.run.jvmArguments>-Dspring.profiles.active=local -noverify -XX:TieredStopAtLevel=1</spring-boot.run.jvmArguments>
-            <spring-boot.run.mainClass>com.org.samples.Application</spring-boot.run.mainClass>
-            <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
-        </properties>
-        <activatedProfiles>
-                <activatedProfile>local</activatedProfile>
-            </activatedProfiles>
-    </action>
-    <action>
-        <actionName>debug</actionName>
-        <packagings>
-            <packaging>jar</packaging>
-        </packagings>
-        <goals>
-            <goal>spring-boot:run</goal>
-        </goals>
-        <properties>
-            <spring-boot.run.jvmArguments>-Dspring.profiles.active=local -Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -noverify -XX:TieredStopAtLevel=1</spring-boot.run.jvmArguments>
-            <spring-boot.run.mainClass>com.org.samples.Application</spring-boot.run.mainClass>
-            <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
-            <jpda.listen>true</jpda.listen>
-        </properties>
-    </action>
-    <action>
-        <actionName>profile</actionName>
-        <packagings>
-            <packaging>jar</packaging>
-        </packagings>
-        <goals>
-            <goal>process-classes</goal>
-            <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
-        </goals>
-        <properties>
-            <exec.args>-classpath %classpath com.org.samples.Application</exec.args>
-            <exec.executable>java</exec.executable>
-        </properties>
-    </action>
-    <action>
-        <actionName>CUSTOM-app-run</actionName>
-        <displayName>run-demo-app</displayName>
-        <packagings>
-            <packaging>jar</packaging>
-        </packagings>
-        <goals>
-            <goal>spring-boot:run</goal>
-        </goals>
-        <properties>
-            <mainClass>com.org.samples.Application</mainClass>
-            <spring-boot.run.jvmArguments>-Dspring.profiles.active=local -noverify -XX:TieredStopAtLevel=1</spring-boot.run.jvmArguments>
-            <spring-boot.run.mainClass>com.org.samples.Application</spring-boot.run.mainClass>
-            <Env.SPRING_OUTPUT_ANSI_ENABLED>always</Env.SPRING_OUTPUT_ANSI_ENABLED>
-        </properties>
-    </action>
-    <action>
         <actionName>CUSTOM-clean-install</actionName>
         <displayName>clean-install</displayName>
         <goals>
             <goal>clean</goal>
             <goal>install</goal>
         </goals>
+        <properties>
+            <Env.DOCKER_HOST>tcp://192.168.99.101:2376</Env.DOCKER_HOST>
+            <Env.DOCKER_CERT_PATH>C:\Users\brijeshdhaker\.minikube\certs</Env.DOCKER_CERT_PATH>
+            <Env.DOCKER_TLS_VERIFY>1</Env.DOCKER_TLS_VERIFY>
+        </properties>
     </action>
     
     <action>
-        <actionName>CUSTOM-clean-package</actionName>
-        <displayName>clean-package</displayName>
+        <actionName>CUSTOM-clean</actionName>
+        <displayName>clean</displayName>
         <goals>
             <goal>clean</goal>
-            <goal>package</goal>
         </goals>
+        <properties>
+            <Env.DOCKER_HOST>tcp://192.168.99.101:2376</Env.DOCKER_HOST>
+            <Env.DOCKER_CERT_PATH>C:\Users\brijeshdhaker\.minikube\certs</Env.DOCKER_CERT_PATH>
+            <Env.DOCKER_TLS_VERIFY>1</Env.DOCKER_TLS_VERIFY>
+        </properties>
     </action>
     
 </actions>
