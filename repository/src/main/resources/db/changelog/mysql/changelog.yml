@@ -1,0 +1,23 @@
+## YAML Template.
+---
+databaseChangeLog:
+  - changeSet:  
+      id:  1  
+      author:  Brijesh D.  
+      changes:
+        - sqlFile:
+            path: JIRA-0001/V1-create-tables.sql
+            relativeToChangelogFile: true
+        - sqlFile:
+            path: JIRA-0001/V1-seed-data.sql
+            relativeToChangelogFile: true    
+  - changeSet:  
+      id:  2  
+      author:  Brijesh D.  
+      changes:
+        - sqlFile:
+            path: JIRA-0002/V1-create-tables.sql
+            relativeToChangelogFile: true
+        - sqlFile:
+            path: JIRA-0002/V1-seed-data.sql
+            relativeToChangelogFile: true                

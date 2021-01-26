@@ -75,7 +75,7 @@
     </dependencies>
     
     <build>
-        <finalName>my-app</finalName>
+        <finalName>sb-myapp</finalName>
         <extensions>
             <extension>
                 <groupId>com.spotify</groupId>
