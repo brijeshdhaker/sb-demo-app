@@ -1,0 +1,22 @@
+#
+#
+#
+version: '3.1'
+#
+services:
+  sbapp:
+    image: brijeshdhaker/sb-myapp:0.0.1-SNAPSHOT
+    container_name: sbapp
+    hostname: sbapp
+    ports:
+      - 8080:8080
+      - 8000:8000
+    networks:
+      - front-tier
+      - back-tier
+#
+#
+networks:
+  front-tier:
+  back-tier:
+# 

@@ -4,17 +4,7 @@
 version: '3.1'
 #
 services:
-  sb-myapp:
-    image: brijeshdhaker/sb-myapp:0.0.1-SNAPSHOT
-    container_name: sb-myapp
-    hostname: sb-myapp
-    links:
-      - mysqldb
-    ports:
-      - 8080:8080
-      - 8000:8000
-#      
-  mysqldb:
+  mysql:
     image: mysql:latest
     container_name: mysql-server
     hostname: mysql-server
@@ -30,3 +20,18 @@ services:
       MYSQL_PASSWORD: pDSSW0rd
     ports:
       - 3306:3306
+    networks:
+      - back-tier  
+#
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9090:8080
+    networks:
+      - back-tier  
+#
+#
+#
+networks:
+  back-tier:
