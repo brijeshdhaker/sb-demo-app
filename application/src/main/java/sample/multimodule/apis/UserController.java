@@ -20,9 +20,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import sample.multimodule.dto.AppRestResponse;
 import sample.multimodule.dto.UserDto;
+import sample.multimodule.kafka.Producer;
+import sample.multimodule.kafka.User;
 import sample.multimodule.service.UserService;
 
 /**
@@ -37,7 +40,9 @@ public class UserController {
     @Autowired
     UserService userService;
     
-    
+    @Autowired
+    Producer producer;
+
     @GetMapping()
     public ResponseEntity<?> list() {
         AppRestResponse appResponse = null;
@@ -88,6 +93,14 @@ public class UserController {
     public ResponseEntity<?> delete(@PathVariable String id) {
         userService.deleteUserById(Long.parseLong(id));
         return new ResponseEntity<String>("Deleted",HttpStatus.OK);
+    }
+    
+    @PostMapping(value = "/publish")
+    public ResponseEntity<?> sendMessageToKafkaTopic(@RequestParam("name") String name, @RequestParam("age") Integer age) {
+        System.out.println("Name :: " + name);
+        System.out.println("Age :: " + age);
+        this.producer.sendMessage(new User(name, age));
+        return new ResponseEntity<String>("{\"message\": \"Message Published\" }", HttpStatus.OK);
     }
     
     @ExceptionHandler(Exception.class)

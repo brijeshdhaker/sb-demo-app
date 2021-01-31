@@ -9,4 +9,9 @@
     <artifactId>sample.multimodule.utilities</artifactId>
     <packaging>jar</packaging>
     <name>Project Module - Utilities</name>
+    
+    <dependencies>
+        
+    </dependencies>
+    
 </project>

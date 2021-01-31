@@ -1,22 +1,87 @@
 #
 #
-#
 version: '3.1'
 #
 services:
   sbapp:
     image: brijeshdhaker/sb-myapp:0.0.1-SNAPSHOT
     container_name: sbapp
-    hostname: sbapp
+    depends_on:
+      - mysqlserver
+      - zookeeper
+      - broker
+    links:
+      - mysqlserver
+      - broker
+      - schema-registry
     ports:
       - 8080:8080
-      - 8000:8000
-    networks:
-      - front-tier
-      - back-tier
 #
+  mysqlserver:
+    image: mariadb:10.3.27
+    container_name: mysqlserver
+    hostname: mysqlserver
+    restart: always
+#    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - /mysql/conf:/etc/mysql/conf.d
+      - /mysql/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: p@SSW0rd
+      MYSQL_DATABASE: PUBLIC
+      MYSQL_USER: developer
+      MYSQL_PASSWORD: pDSSW0rd
+    ports:
+      - 3306:3306
 #
-networks:
-  front-tier:
-  back-tier:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.1
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+#      
+  broker:
+    image: confluentinc/cp-kafka:5.5.1
+    hostname: broker
+    container_name: broker
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"  
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+#      
+  schema-registry:
+    image: confluentinc/cp-schema-registry:5.5.1
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - zookeeper
+      - broker
+    ports:
+      - "8081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:9092'
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: WARN
+    volumes:
+      - /e/host-path/kafka/schema/:/opt/app/schema/
+#
+#networks:
+#  default:
+#    external:
+#      name: bridge  
+#  backend:
+#    driver: bridge
 # 

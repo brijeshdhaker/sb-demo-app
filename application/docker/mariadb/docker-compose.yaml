@@ -1,0 +1,40 @@
+#
+#
+#
+version: '3.1'
+#
+services:
+  mariadb:
+    image: mariadb:10.3.27
+    container_name: mariadb
+    hostname: mariadbhost
+    restart: always
+#    command: --default-authentication-plugin=mysql_native_password
+#    volumes:
+#      - /mysql/conf:/etc/mysql/conf.d
+#      - /mysql/data:/var/lib/mysql/data
+    environment:
+      MYSQL_OPERATIONS_USER: opuser
+      MYSQL_OPERATIONS_PASSWORD: oppass
+      MYSQL_ROOT_PASSWORD: p@SSW0rd
+      MYSQL_DATABASE: PUBLIC
+      MYSQL_USER: developer
+      MYSQL_PASSWORD: pDSSW0rd
+      MYSQL_LOWER_CASE_TABLE_NAMES: 0
+    ports:
+      - 3306:3306
+    networks:
+      - back-tier  
+#
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9090:8080
+    networks:
+      - back-tier  
+#
+#
+#
+networks:
+  back-tier:

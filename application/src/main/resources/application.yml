@@ -29,7 +29,13 @@ spring:
     cache: false
   application:
     name: sample-app
-
+logging:
+  level:
+    root: info
+topic:
+  name: users
+  partitions-num: 1
+  replication-factor: 1
 
 #
 ---
@@ -64,10 +70,37 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  kafka:
+    bootstrap-servers:
+      - 192.168.99.100:9092
+    properties:
+      # CCloud broker connection parameters
+#      ssl.endpoint.identification.algorithm: https
+#      sasl.mechanism: PLAIN
+      request.timeout.ms: 20000
+      retry.backoff.ms: 500
+#      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="ccloud_key" password="ccloud_secret";
+#      security.protocol: SASL_SSL
+      # CCloud Schema Registry Connection parameter
+      schema.registry.url: 192.168.99.100:8081
+#      basic.auth.credentials.source: USER_INFO
+#      schema.registry.basic.auth.user.info: sr_ccloud_key:sr_ccloud_key   
+    consumer:
+      bootstrap-servers: 192.168.99.100:9092
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+    producer:
+      bootstrap-servers: 192.168.99.100:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+    template:
+      default-topic: users  
+   
 #
 ---
 #
----
 #
 spring:
   profiles: docker  
@@ -88,13 +121,34 @@ spring:
         type: info
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.99.101:3306/PUBLIC
-    username: developer
-    password: pDSSW0rd
+    url: jdbc:mysql://mysqlserver:3306/PUBLIC
+    username: root
+    password: p@SSW0rd
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/mysql/changelog.yml
-#    context: mysql        
+#    context: mysql
+  kafka:
+    properties:
+      bootstrap.servers: broker:9092
+      schema.registry.url: http://schema-registry:8081  
+    consumer:
+      group-id: group_id
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        specific.avro.reader: true
+        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
+    producer:
+      acks: all  
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
+    template:
+      default-topic:
+      
 #
 ---
 #

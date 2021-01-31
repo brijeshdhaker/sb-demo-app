@@ -1,0 +1,17 @@
+{
+  "namespace": "sample.multimodule.kafka",
+  "type": "record",
+  "name": "User",
+  "version": "1",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "age",
+      "type": "int"
+    }
+  ]
+}
