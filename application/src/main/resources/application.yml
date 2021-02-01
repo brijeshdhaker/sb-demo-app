@@ -71,32 +71,25 @@ spring:
       enabled: true
       path: /h2-console
   kafka:
-    bootstrap-servers:
-      - 192.168.99.100:9092
     properties:
-      # CCloud broker connection parameters
-#      ssl.endpoint.identification.algorithm: https
-#      sasl.mechanism: PLAIN
-      request.timeout.ms: 20000
-      retry.backoff.ms: 500
-#      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="ccloud_key" password="ccloud_secret";
-#      security.protocol: SASL_SSL
-      # CCloud Schema Registry Connection parameter
-      schema.registry.url: 192.168.99.100:8081
-#      basic.auth.credentials.source: USER_INFO
-#      schema.registry.basic.auth.user.info: sr_ccloud_key:sr_ccloud_key   
+      bootstrap.servers: 192.168.99.100:19092
+      schema.registry.url: http://192.168.99.100:8081  
     consumer:
-      bootstrap-servers: 192.168.99.100:9092
       group-id: group_id
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        specific.avro.reader: true
+        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor
     producer:
-      bootstrap-servers: 192.168.99.100:9092
+      acks: all  
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
     template:
-      default-topic: users  
+      default-topic:  
    
 #
 ---
@@ -144,6 +137,7 @@ spring:
       acks: all  
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      auto.register.schemas: true
       properties:
         interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
     template:
