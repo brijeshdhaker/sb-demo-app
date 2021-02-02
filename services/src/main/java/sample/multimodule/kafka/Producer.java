@@ -28,7 +28,7 @@ public class Producer {
 
     @Value("${topic.name}")
     private String TOPIC;
-
+    private static int counter = 0;
     private final KafkaTemplate<String, User> kafkaTemplate;
     
     @Autowired
@@ -39,7 +39,14 @@ public class Producer {
     public void sendMessage(User user) {
         
         this.kafkaTemplate.send(this.TOPIC, user.getName(), user);
-        /*
+        log.info(String.format("Produced user -> %s", user));
+        
+    }
+    
+    public void processMessage(User user) {
+        
+        //this.kafkaTemplate.send(this.TOPIC, user.getName(), user);
+        
         Properties properties = new Properties();
         // Kafka Properties
         properties.setProperty("bootstrap.servers", "broker:9092");
@@ -51,12 +58,18 @@ public class Producer {
         properties.setProperty("schema.registry.url", "http://schema-registry:8081");
 
         KafkaProducer<String, User> producer = new KafkaProducer<String, User>(properties);
-        ProducerRecord<String, User> producerRecord = new ProducerRecord<String, User>(TOPIC, user);
+        
+        String key = "id_"+counter++;
+        ProducerRecord<String, User> producerRecord = new ProducerRecord<String, User>(TOPIC, key, user);
         producer.send(producerRecord, new Callback() {
             @Override
             public void onCompletion(RecordMetadata metadata, Exception exception) {
                 if (exception == null) {
-                    log.info(metadata);
+                    log.info("Successfully received the details as: \n" +  
+                    "Topic:" + metadata.topic() + "\n" +  
+                    "Partition:" + metadata.partition() + "\n" +  
+                    "Offset" + metadata.offset() + "\n" +  
+                    "Timestamp" + metadata.timestamp());  
                 } else {
                     log.error(exception.getMessage());
                 }
@@ -65,7 +78,7 @@ public class Producer {
 
         producer.flush();
         producer.close();
-        */    
+            
         log.info(String.format("Produced user -> %s", user));
     }
 }

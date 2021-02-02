@@ -5,20 +5,20 @@
  */
 package sample.multimodule.domain;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import sample.multimodule.dto.UserDto;
-import sample.multimodule.utilities.converters.LocalDateTimeConverter;
 
 /**
  *
@@ -26,7 +26,7 @@ import sample.multimodule.utilities.converters.LocalDateTimeConverter;
  */
 @Entity
 @Table(name= "USERS")
-public class User implements Serializable {
+public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
     
@@ -45,23 +45,13 @@ public class User implements Serializable {
     @Column(name= "STATUS")
     private String status;
 
-    @Convert(converter = LocalDateTimeConverter.class)
-    @Column(name= "ADD_TS")
-    private LocalDateTime createTs;
-    
-    @Convert(converter = LocalDateTimeConverter.class)
-    @Column(name= "UPDATE_TS")
-    private LocalDateTime updateTs;
-    
-    @PrePersist
-    public void prePersist(){
-        createTs = updateTs = LocalDateTime.now();
-    }
-    
-    @PreUpdate
-    public void preUpdate(){
-        updateTs = LocalDateTime.now();
-    }
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+        name = "USER_ROLES",
+        joinColumns = @JoinColumn(name="USER_ID", referencedColumnName = "USERID"),
+        inverseJoinColumns = @JoinColumn(name="ROLE_ID", referencedColumnName = "ID")
+    )
+    private Set<Role> roles;
     
     public Long getId() {
         return id;
@@ -95,23 +85,14 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public LocalDateTime getCreateTs() {
-        return createTs;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setCreateTs(LocalDateTime createTs) {
-        this.createTs = createTs;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
-    public LocalDateTime getUpdateTs() {
-        return updateTs;
-    }
-
-    public void setUpdateTs(LocalDateTime updateTs) {
-        this.updateTs = updateTs;
-    }
-
-    
     @Override
     public int hashCode() {
         int hash = 0;

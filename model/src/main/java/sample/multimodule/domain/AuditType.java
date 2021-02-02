@@ -5,17 +5,12 @@
  */
 package sample.multimodule.domain;
 
-import sample.multimodule.utilities.converters.LocalDateTimeConverter;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 /**
@@ -24,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name= "AUDIT_TYPE")
-public class AuditType implements Serializable {
+public class AuditType extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
     
@@ -38,24 +33,6 @@ public class AuditType implements Serializable {
     
     @Column(name= "DESCRIPTION")
     private String description;
-    
-    @Convert(converter = LocalDateTimeConverter.class)
-    @Column(name= "ADD_TS")
-    private LocalDateTime createTs;
-    
-    @Convert(converter = LocalDateTimeConverter.class)
-    @Column(name= "UPDATE_TS")
-    private LocalDateTime updateTs;
-    
-    @PrePersist
-    public void prePersist(){
-        createTs = updateTs = LocalDateTime.now();
-    }
-    
-    @PreUpdate
-    public void preUpdate(){
-        updateTs = LocalDateTime.now();
-    }
     
     public Integer getId() {
         return id;
@@ -81,22 +58,6 @@ public class AuditType implements Serializable {
         this.description = description;
     }
 
-    public LocalDateTime getCreateTs() {
-        return createTs;
-    }
-
-    public void setCreateTs(LocalDateTime createTs) {
-        this.createTs = createTs;
-    }
-
-    public LocalDateTime getUpdateTs() {
-        return updateTs;
-    }
-
-    public void setUpdateTs(LocalDateTime updateTs) {
-        this.updateTs = updateTs;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 0;

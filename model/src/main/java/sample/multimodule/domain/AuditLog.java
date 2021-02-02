@@ -5,13 +5,9 @@
  */
 package sample.multimodule.domain;
 
-import sample.multimodule.utilities.converters.LocalDateTimeConverter;
 import sample.multimodule.dto.AuditlogDto;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -30,7 +24,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name= "AUDITLOG")
-public class AuditLog implements Serializable {
+public class AuditLog extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
     
@@ -59,24 +53,6 @@ public class AuditLog implements Serializable {
     @Column(name= "USERID")
     private String userid;
     
-    @Convert(converter = LocalDateTimeConverter.class)
-    @Column(name= "ADD_TS")
-    private LocalDateTime createTs;
-    
-    @Convert(converter = LocalDateTimeConverter.class)
-    @Column(name= "UPDATE_TS")
-    private LocalDateTime updateTs;
-    
-    @PrePersist
-    public void prePersist(){
-        createTs = updateTs = LocalDateTime.now();
-    }
-    
-    @PreUpdate
-    public void preUpdate(){
-        updateTs = LocalDateTime.now();
-    }
-
     public Long getId() {
         return id;
     }
@@ -133,23 +109,6 @@ public class AuditLog implements Serializable {
         this.userid = userid;
     }
 
-    public LocalDateTime getCreateTs() {
-        return createTs;
-    }
-
-    public void setCreateTs(LocalDateTime createTs) {
-        this.createTs = createTs;
-    }
-
-    public LocalDateTime getUpdateTs() {
-        return updateTs;
-    }
-
-    public void setUpdateTs(LocalDateTime updateTs) {
-        this.updateTs = updateTs;
-    }
-
-    
     @Override
     public int hashCode() {
         int hash = 0;

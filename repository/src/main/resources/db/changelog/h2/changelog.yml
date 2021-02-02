@@ -2,32 +2,36 @@
 ---
 databaseChangeLog:
   - changeSet:  
-      id:  1  
+      id:  0001  
       author:  Brijesh D.  
       changes:
         - sqlFile:
-            path: JIRA-0001/V1-create-tables.sql
+            path: JIRA-0001/audit-type-tables.sql
             relativeToChangelogFile: true
         - sqlFile:
-            path: JIRA-0001/V1-seed-data.sql
+            path: JIRA-0001/auditlog-table.sql
             relativeToChangelogFile: true    
   - changeSet:  
-      id:  2  
+      id:  0002  
       author:  Brijesh D.  
       changes:
         - sqlFile:
-            path: JIRA-0002/V1-create-tables.sql
+            path: JIRA-0002/account-tables.sql
             relativeToChangelogFile: true
-        - sqlFile:
-            path: JIRA-0002/V1-seed-data.sql
-            relativeToChangelogFile: true                
   - changeSet:  
-      id:  3  
+      id:  0003  
       author:  Brijesh D.  
       changes:
         - sqlFile:
-            path: JIRA-0003/V1-create-tables.sql
+            path: JIRA-0003/user-tables.sql
+            relativeToChangelogFile: true
+  - changeSet:  
+      id:  0004  
+      author:  Brijesh D.  
+      changes:
+        - sqlFile:
+            path: JIRA-0004/role-table.sql
             relativeToChangelogFile: true
         - sqlFile:
-            path: JIRA-0003/V1-seed-data.sql
-            relativeToChangelogFile: true                            
+            path: JIRA-0004/user-role-tables.sql
+            relativeToChangelogFile: true                                        

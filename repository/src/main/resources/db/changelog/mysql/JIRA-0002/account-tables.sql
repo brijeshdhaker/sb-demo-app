@@ -8,6 +8,11 @@ CREATE TABLE  ACCOUNT (
     ACC_TYPE    varchar(10),
     CC_NUMBER   varchar(24),
     ADD_TS      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UPDATE_TS   TIMESTAMP,
+    UPD_TS      TIMESTAMP,
     primary key(ID)
 );
+
+create sequence ACCOUNT_SEQUENCE start with 1 increment by 1;
+
+insert into ACCOUNT (ACC_NUMBER, ACC_TYPE, CC_NUMBER, ADD_TS, UPD_TS ) values
+('1001', 'SAVING', '1111-2222-3333-4444', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
