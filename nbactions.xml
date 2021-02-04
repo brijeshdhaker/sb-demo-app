@@ -27,7 +27,7 @@
             <goal>-Pdocker</goal>
         </goals>
         <properties>
-            <Env.DOCKER_HOST>tcp://192.168.99.100:2376</Env.DOCKER_HOST>
+            <Env.DOCKER_HOST>tcp://192.168.99.105:2376</Env.DOCKER_HOST>
             <Env.DOCKER_CERT_PATH>C:/Users/brijeshdhaker/.docker/machine/machines/default</Env.DOCKER_CERT_PATH>
             <Env.DOCKER_TLS_VERIFY>1</Env.DOCKER_TLS_VERIFY>
         </properties>

@@ -72,8 +72,8 @@ spring:
       path: /h2-console
   kafka:
     properties:
-      bootstrap.servers: 192.168.99.100:19092
-      schema.registry.url: http://192.168.99.100:8081  
+      bootstrap.servers: 192.168.99.105:19092
+      schema.registry.url: http://192.168.99.105:8081  
     consumer:
       group-id: group_id
       auto-offset-reset: latest
@@ -114,7 +114,7 @@ spring:
         type: info
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysqlserver:3306/PUBLIC
+    url: jdbc:mysql://mariadb:3306/PUBLIC
     username: root
     password: p@SSW0rd
   liquibase:

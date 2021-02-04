@@ -39,7 +39,7 @@ public class Producer {
     public void sendMessage(User user) {
         
         this.kafkaTemplate.send(this.TOPIC, user.getName(), user);
-        log.info(String.format("Produced user -> %s", user));
+        log.info(String.format("Produced Message -> %s", user));
         
     }
     
